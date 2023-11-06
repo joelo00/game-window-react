@@ -10,7 +10,12 @@ import p5 from 'p5';
 function Comp(props) {
   const [rerender, setRerender] = useState(false);
   const scene = useRef();
-  const engine = useRef(Engine.create());
+  const engine = useRef(Engine.create({
+    gravity: {
+      x: 0,
+      y: 0,
+    }
+}))
   const birdRef = useRef(null);
   const mousePosition = useRef({ x: 0, y: 0 });
   const isDragging = useRef(false);
@@ -23,6 +28,7 @@ function Comp(props) {
     const gameWindowHeight = 800
     const gameWindowWidth = 600
     const render = Render.create({
+<<<<<<< HEAD
       element: scene.current,
       engine: engine.current,
       options: {
@@ -32,6 +38,17 @@ function Comp(props) {
         background: 'rgba(100, 200, 100, 1)',
       }
     })
+=======
+        element: scene.current,
+        engine: engine.current,
+        options: {
+          width: gameWindowWidth,
+          height: gameWindowHeight,
+          wireframes: false,
+          background: 'green',
+        }
+      })
+>>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
 
     Matter.Events.on(engine.current, 'beforeUpdate', () => {
       if (birdRef.current && isDragging.current) {
@@ -51,6 +68,21 @@ function Comp(props) {
       Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true })
     ])
 
+<<<<<<< HEAD
+=======
+      
+      
+      const wallThickness = 20;
+      const elasticity = 1;
+
+      World.add(engine.current.world, [
+        Bodies.rectangle(gameWindowWidth / 2, wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(gameWindowWidth / 2, gameWindowHeight - wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }) 
+      ])
+      
+>>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
 
     Matter.Runner.run(engine.current)
 
@@ -86,6 +118,7 @@ function Comp(props) {
 
   const handleMouseClick = e => {
     if (birdRef.current && slingshotRef.current) {
+<<<<<<< HEAD
       const mousePosition = { x: e.clientX, y: e.clientY };
       const birdPosition = birdRef.current.body.position;
       const strength = 0.01;
@@ -96,6 +129,18 @@ function Comp(props) {
       World.remove(engine.current.world, slingshotRef.current.sling);
       Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
     }
+=======
+    const mousePosition = { x: e.clientX, y: e.clientY };
+    const birdPosition = birdRef.current.body.position;
+    const strength = 0.001;
+    const force = {
+      x: (birdPosition.x - mousePosition.x) * strength,
+      y: (birdPosition.y - mousePosition.y) * strength,
+    };
+    World.remove(engine.current.world, slingshotRef.current.sling);
+    Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
+  }
+>>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
   }
 
   const generateNewMole = (e) => {
@@ -110,8 +155,15 @@ function Comp(props) {
       slingshot = new SlingShot(300 + bounce, 600 + bounce, bird.body, engine.current.world);
       slingshotRef.current = slingshot
     }
+    if (e.key === 'ArrowUp') {
+      birdRef.current.body.circleRadius += 5;
+    }
+    if (e.key === 'ArrowDown') {
+      birdRef.current.body.circleRadius -= 5;
+    }
   }
 
+<<<<<<< HEAD
   const displayNewCeleb = () => {
     getShowCharacters().then(({ data }) => {
       const randomId = Math.floor(data.length * Math.random())
@@ -127,6 +179,8 @@ function Comp(props) {
 
 
 
+=======
+>>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
 
   return (
     <>

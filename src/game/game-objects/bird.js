@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 class Bird {
   constructor(x, y, r, world, birdImage) {
     const options = {
-      restitution: 0.5
+      restitution: 1.3
     };
     this.body = Matter.Bodies.circle(x, y, r, options);
     Matter.Body.setMass(this.body, this.body.mass * 4);

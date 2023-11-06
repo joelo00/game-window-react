@@ -14,8 +14,6 @@ function Comp (props) {
   const mousePosition = useRef({ x: 0, y: 0 });
   const isDragging = useRef(false);
   const slingshotRef = useRef(null);
-
-  let sketch;
   let bird;
   let slingshot;
 
@@ -40,11 +38,7 @@ function Comp (props) {
       });
 
       
-      bird = new Bird(300, 500, 25, engine.current.world, birdImage);
-      birdRef.current = bird
-      const bounce = 5 * (Math.random() - 0.5);
-      slingshot = new SlingShot(300 + bounce, 600 + bounce, bird.body, engine.current.world);
-      slingshotRef.current = slingshot
+      
       const wallThickness = 20;
       
       World.add(engine.current.world, [
@@ -58,6 +52,12 @@ function Comp (props) {
     Matter.Runner.run(engine.current)
 
     Render.run(render)
+
+    bird = new Bird(300, 500, 25, engine.current.world, birdImage);
+    birdRef.current = bird
+    const bounce = 5 * (Math.random() - 0.5);
+    slingshot = new SlingShot(300 + bounce, 600 + bounce, bird.body, engine.current.world); 
+    slingshotRef.current = slingshot
 
 
 
@@ -73,26 +73,7 @@ function Comp (props) {
     }
   }, [rerender])
 
-  const handleDown = (e) => {
-    isDragging.current = true;
-    const mousePosition = { x: e.clientX, y: e.clientY };
-    const birdPosition = birdRef.current.body.position;
-    const strength = 0.01;
-    const force = {
-      x: (birdPosition.x - mousePosition.x) * strength,
-      y: (birdPosition.y - mousePosition.y) * strength,
-    };
-    Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
-  };
 
-  const handleUp = () => {
-    isDragging.current = false;
-  
-    if (slingshot) {
-  
-      slingshotRef.current.bodyB = null;
-    }
-}
 
   const handleMouseMove = (e) => {
     if (isDragging.current) {
@@ -100,27 +81,32 @@ function Comp (props) {
     }
   };
 
-  const handleAddCircle = e => {
-      
-      bird = new Bird(e.clientX, e.clientY, 25, engine.current.world, birdImage);
+  const handleMouseClick = e => {
+    if (birdRef.current && slingshotRef.current) {
+    const mousePosition = { x: e.clientX, y: e.clientY };
+    const birdPosition = birdRef.current.body.position;
+    const strength = 0.01;
+    const force = {
+      x: (birdPosition.x - mousePosition.x) * strength,
+      y: (birdPosition.y - mousePosition.y) * strength,
+    };
+    World.remove(engine.current.world, slingshotRef.current.sling);
+    Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
+  }
+  }
+
+  const generateNewMole = (e) => {
+    if (e.key === ' ' || e.key === 'Spacebar' ){
+      if (birdRef.current && slingshotRef.current) {
+        World.remove(engine.current.world, birdRef.current.body);
+        World.remove(engine.current.world, slingshotRef.current.sling);
+      }
+      bird = new Bird(300 * Math.random(), 500, 25, engine.current.world, birdImage);
       birdRef.current = bird
-      const bounce = 10 * (Math.random() - 0.5);
-      slingshot = new SlingShot(e.clientX + bounce, e.clientY + bounce, bird.body, engine.current.world);
+      const bounce = 5 * (Math.random() - 0.5);
+      slingshot = new SlingShot(300 + bounce, 600 + bounce, bird.body, engine.current.world);
       slingshotRef.current = slingshot
-    /*   const ball = Bodies.circle(
-        e.clientX,
-        e.clientY,
-        10 + Math.random() * 30,
-        {
-          mass: 10,
-          restitution: 1,
-          friction: 0.005,
-          render: {
-            fillStyle: '#0000ff'
-          }
-        }) */
-      World.add(engine.current.world, [bird, slingshot])
-    
+    }
   }
 
   return (
@@ -128,9 +114,9 @@ function Comp (props) {
     
     <div className='game-window'>
     <div
-      onMouseDown={handleDown}
-      onMouseUp={handleUp}
-      onClick={handleAddCircle}
+      tabIndex={0}
+      onKeyDown={generateNewMole}
+      onClick={handleMouseClick }
       onMouseMove={handleMouseMove}
       style={{ position: 'absolute', width: '100%', height: '100%' }}
     >

@@ -9,7 +9,12 @@ import p5 from 'p5';
 function Comp (props) {
   const [rerender, setRerender] = useState(false);
   const scene = useRef();
-  const engine = useRef(Engine.create());
+  const engine = useRef(Engine.create({
+    gravity: {
+      x: 0,
+      y: 0,
+    }
+}))
   const birdRef = useRef(null);
   const mousePosition = useRef({ x: 0, y: 0 });
   const isDragging = useRef(false);
@@ -27,7 +32,7 @@ function Comp (props) {
           width: gameWindowWidth,
           height: gameWindowHeight,
           wireframes: false,
-          background: 'transparent',
+          background: 'green',
         }
       })
 
@@ -40,12 +45,13 @@ function Comp (props) {
       
       
       const wallThickness = 20;
-      
+      const elasticity = 1;
+
       World.add(engine.current.world, [
-        Bodies.rectangle(gameWindowWidth / 2, wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true }), 
-        Bodies.rectangle(wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true }), 
-        Bodies.rectangle(gameWindowWidth / 2, gameWindowHeight - wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true }), 
-        Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true }) 
+        Bodies.rectangle(gameWindowWidth / 2, wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(gameWindowWidth / 2, gameWindowHeight - wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
+        Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }) 
       ])
       
 
@@ -85,7 +91,7 @@ function Comp (props) {
     if (birdRef.current && slingshotRef.current) {
     const mousePosition = { x: e.clientX, y: e.clientY };
     const birdPosition = birdRef.current.body.position;
-    const strength = 0.01;
+    const strength = 0.001;
     const force = {
       x: (birdPosition.x - mousePosition.x) * strength,
       y: (birdPosition.y - mousePosition.y) * strength,
@@ -107,7 +113,14 @@ function Comp (props) {
       slingshot = new SlingShot(300 + bounce, 600 + bounce, bird.body, engine.current.world);
       slingshotRef.current = slingshot
     }
+    if (e.key === 'ArrowUp') {
+      birdRef.current.body.circleRadius += 5;
+    }
+    if (e.key === 'ArrowDown') {
+      birdRef.current.body.circleRadius -= 5;
+    }
   }
+
 
   return (
     <div className='game-window-and-button-container'>

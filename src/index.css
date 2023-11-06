@@ -1,0 +1,19 @@
+.celeb-picture{
+  position: absolute;
+  top: 80px;
+  left: 10px;
+  width: 600px;
+  height: 800px;
+  z-index: -1;
+
+}
+
+.game-window-and-button-container{
+
+}
+
+button {
+  z-index: 1;
+  position: absolute;
+
+}

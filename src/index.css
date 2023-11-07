@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+
+* {
+  
+  
+  font-family: 'Pixelify Sans', sans-serif;
+}
+
 .celeb-picture{
   position: absolute;
   top: 80px;
@@ -5,15 +13,43 @@
   width: 600px;
   height: 800px;
   z-index: -1;
+  border: solid black 5px;
+  box-sizing: border-box;
 
 }
 
 .game-window-and-button-container{
-
+display:flex;
+flex-direction: column;
+width: 600px;
+height: 900px;
 }
 
 button {
-  z-index: 1;
-  position: absolute;
-
+  
+  margin-top: 1100px;
+padding: 10px;
 }
+
+.gameButton {
+ text-align: center;
+}
+
+
+button {
+  background: none;
+  color: #ffa260;
+  border-radius: 18px;
+  border: 2px solid;
+  padding: 1em 2em;
+  font-size: 1em;
+  transition: all 0.25s;
+}
+
+.game-window {
+  border-radius: 18px;
+}
+
+
+
+

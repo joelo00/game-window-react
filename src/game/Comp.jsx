@@ -15,7 +15,7 @@ function Comp(props) {
       x: 0,
       y: 0,
     }
-}))
+  }))
   const birdRef = useRef(null);
   const mousePosition = useRef({ x: 0, y: 0 });
   const isDragging = useRef(false);
@@ -28,27 +28,15 @@ function Comp(props) {
     const gameWindowHeight = 800
     const gameWindowWidth = 600
     const render = Render.create({
-<<<<<<< HEAD
       element: scene.current,
       engine: engine.current,
       options: {
         width: gameWindowWidth,
         height: gameWindowHeight,
         wireframes: false,
-        background: 'rgba(100, 200, 100, 1)',
+        background: 'transparent',
       }
     })
-=======
-        element: scene.current,
-        engine: engine.current,
-        options: {
-          width: gameWindowWidth,
-          height: gameWindowHeight,
-          wireframes: false,
-          background: 'green',
-        }
-      })
->>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
 
     Matter.Events.on(engine.current, 'beforeUpdate', () => {
       if (birdRef.current && isDragging.current) {
@@ -68,21 +56,18 @@ function Comp(props) {
       Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true })
     ])
 
-<<<<<<< HEAD
-=======
-      
-      
-      const wallThickness = 20;
-      const elasticity = 1;
 
-      World.add(engine.current.world, [
-        Bodies.rectangle(gameWindowWidth / 2, wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
-        Bodies.rectangle(wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }), 
-        Bodies.rectangle(gameWindowWidth / 2, gameWindowHeight - wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }), 
-        Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }) 
-      ])
-      
->>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
+
+
+    const elasticity = 1;
+
+    World.add(engine.current.world, [
+      Bodies.rectangle(gameWindowWidth / 2, wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }),
+      Bodies.rectangle(wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity }),
+      Bodies.rectangle(gameWindowWidth / 2, gameWindowHeight - wallThickness / 2, gameWindowWidth, wallThickness, { isStatic: true, restitution: elasticity }),
+      Bodies.rectangle(gameWindowWidth - wallThickness / 2, gameWindowHeight / 2, wallThickness, gameWindowHeight, { isStatic: true, restitution: elasticity })
+    ])
+
 
     Matter.Runner.run(engine.current)
 
@@ -118,10 +103,9 @@ function Comp(props) {
 
   const handleMouseClick = e => {
     if (birdRef.current && slingshotRef.current) {
-<<<<<<< HEAD
       const mousePosition = { x: e.clientX, y: e.clientY };
       const birdPosition = birdRef.current.body.position;
-      const strength = 0.01;
+      const strength = 0.001;
       const force = {
         x: (birdPosition.x - mousePosition.x) * strength,
         y: (birdPosition.y - mousePosition.y) * strength,
@@ -129,18 +113,6 @@ function Comp(props) {
       World.remove(engine.current.world, slingshotRef.current.sling);
       Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
     }
-=======
-    const mousePosition = { x: e.clientX, y: e.clientY };
-    const birdPosition = birdRef.current.body.position;
-    const strength = 0.001;
-    const force = {
-      x: (birdPosition.x - mousePosition.x) * strength,
-      y: (birdPosition.y - mousePosition.y) * strength,
-    };
-    World.remove(engine.current.world, slingshotRef.current.sling);
-    Matter.Body.applyForce(birdRef.current.body, birdPosition, force);
-  }
->>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
   }
 
   const generateNewMole = (e) => {
@@ -163,9 +135,9 @@ function Comp(props) {
     }
   }
 
-<<<<<<< HEAD
   const displayNewCeleb = () => {
     getShowCharacters().then(({ data }) => {
+
       const randomId = Math.floor(data.length * Math.random())
       const celebURL = data[randomId].person.image.original;
       setCelebURL(celebURL);
@@ -179,8 +151,6 @@ function Comp(props) {
 
 
 
-=======
->>>>>>> 7a302ce571c5a1a04a3486f7f06e57c701d1f8b7
 
   return (
     <>
@@ -198,7 +168,9 @@ function Comp(props) {
           </div>
           <img className="celeb-picture" src={celebURL} alt="a picture of a random celebrity" />
         </div>
-        <button onClick={() => displayNewCeleb()}>New Game</button>
+        <div className="gameButton">
+          <button onClick={() => displayNewCeleb()}>New Game</button>
+        </div>
       </div>
     </>
   )
